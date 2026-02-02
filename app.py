@@ -21,13 +21,39 @@ def create_task():
     return jsonify({"message":"Nova Tarefa enviada com sucesso!"})
 
 @app.route("/tasks", methods=["GET"])
-def read_task():
+def get_tasks():
     task_list = [task.to_dict() for task in tasks]
     output = {
                 "tasks": task_list,
                 "total_tasks": 0
     }
     return jsonify(output)
+
+@app.route("/tasks/<int:id>", methods=["GET"])
+def get_task(id):
+    task = None
+    for t in tasks:
+        if t.id == id:
+            return jsonify(t.to_dict())
+        
+    return jsonify({"message": "Não foi possível encontrar a atividade"}), 404
+
+@app.route("/task/<int:id>", methods=["PUT"])
+def update_task(id):
+    task = None
+    for t in tasks:
+        if t.id == id:
+            task = t
+
+    if task == None:
+        return jsonify({"message": "Não foi possível encontrar a atividade"}), 404
+
+    data = request.get_json()
+    task.title = data["title"]
+    task.description = data["description"]
+    task.completed = data["completed"]
+    print(task)
+    return jsonify({"message" : "Tarefa atualizada com sucesso"})
 
 if __name__ == "__main__":
     app.run(debug=True)
