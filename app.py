@@ -36,7 +36,8 @@ def get_task(id):
     for t in tasks: # pega a primeira tarefa na lista, chama ela de t
         if t.id == id: # compara o id da tarefa t ao id na url
             task = t
-           
+            break
+
     if task == None:
         return jsonify({"message": "Não foi possível encontrar a tarefa"}), 404 # caso o usuario coloque uma tarefa invalida
     
@@ -48,6 +49,7 @@ def update_task(id):
     for t in tasks: # mesma coisa do anterior, pega a tarefa na lista e atribui a t
         if t.id == id: # se o id bater com a URL 
             task = t # bota a tarefa em t temporariamente
+            break
 
     if task == None: # caso o id não bata, task continuara como None 
         return jsonify({"message": "Não foi possível encontrar a tarefa"}), 404
@@ -65,13 +67,13 @@ def delete_task(id):
     for t in tasks: 
         if t.id == id:
             task = t
-                   
+            break # Otimização para o aplicativo não ficar rodando toda vez
+
     if task == None:
         return jsonify({"Message" : "Não foi possível encontrar a tarefa"}), 404
 
     tasks.remove(task)
     return jsonify({"Message" : "Tarefa deletada com sucesso"})
 
-    
 if __name__ == "__main__": # Liga o servidor. O modo debug=True reinicia o servidor automaticamente toda vez que salvar o arquivo e mostra os erros detalhados
     app.run(debug=True)
