@@ -19,7 +19,7 @@ def create_task():
     task_id_control += 1 
     tasks.append(new_task) # adiciona a nova tarefa no final da lista
     print(tasks)
-    return jsonify({"message":"Nova Tarefa enviada com sucesso!"})
+    return jsonify({"message":"Nova Tarefa enviada com sucesso!", "id": new_task.id})
 
 @app.route("/tasks", methods=["GET"]) # Rota para ver as tarefas existentes utilizando o método GET
 def get_tasks():
@@ -41,7 +41,7 @@ def get_task(id):
     if task == None:
         return jsonify({"message": "Não foi possível encontrar a tarefa"}), 404 # caso o usuario coloque uma tarefa invalida
     
-    return jsonify(t.to_dict()) # se bater ele retorna a tarefa para o usuario
+    return jsonify(task.to_dict()) # se bater ele retorna a tarefa para o usuario
 
 @app.route("/tasks/<int:id>", methods=["PUT"]) # Rota de atualização de uma tarefa 
 def update_task(id): 
@@ -70,10 +70,10 @@ def delete_task(id):
             break # Otimização para o aplicativo não ficar rodando toda vez
 
     if task == None:
-        return jsonify({"Message" : "Não foi possível encontrar a tarefa"}), 404
+        return jsonify({"message" : "Não foi possível encontrar a tarefa"}), 404
 
     tasks.remove(task)
-    return jsonify({"Message" : "Tarefa deletada com sucesso"})
+    return jsonify({"message" : "Tarefa deletada com sucesso"})
 
 if __name__ == "__main__": # Liga o servidor. O modo debug=True reinicia o servidor automaticamente toda vez que salvar o arquivo e mostra os erros detalhados
     app.run(debug=True)
